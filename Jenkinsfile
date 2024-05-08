@@ -6,7 +6,7 @@ pipeline {
     environment {
         TO_EMAIL_ADDRESS = credentials('main_dest_email')
 	DOCKER_REGISTRY = credentials('docker_username1')
-	DOCKER_CREDS = credentials('docker-creds1')
+	DOCKER_CREDS = 'docker-creds1'
     }
     stages {
         stage('init') {

@@ -1,4 +1,4 @@
-def gv
+String repoName, String imageNamedef gv
 
 pipeline {
     agent any
@@ -8,6 +8,7 @@ pipeline {
     environment {
         TO_EMAIL_ADDRESS = credentials('main_dest_email')
 	DOCKER_REGISTRY = credentials('docker_username1')
+	DOCKER_CREDS = credentials('docker-creds1')
     }
     stages {
         stage('init') {
@@ -28,7 +29,7 @@ pipeline {
         stage('DockerBuild'){
             steps{
                 script {
-                gv.buildDock(env.DOCKER_REGISTRY)
+                gv.buildDock(env.DOCKER_CREDS, env.DOCKER_REGISTRY)
                 }
             }
         }

@@ -1,5 +1,3 @@
-String repoName, String imageNamedef gv
-
 pipeline {
     agent any
     tools {

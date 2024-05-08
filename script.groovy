@@ -10,7 +10,7 @@ def buildDock(String credId, String dockerRegistry) {
   withCredentials([usernamePassword(credentialsId: "$credId", usernameVariable: 'USER', passwordVariable: 'PASS')]) {
     def USER = env.USER
     def PASS = env.PASS
-    sh 'echo $PASS \| docker login -u $USER --password-stdin'
+    sh(script: "/bin/bash -c 'echo $PASS | docker login -u $USER --password-stdin'", returnStdout: true)
     sh 'echo HERE'
     docker_app = docker.build("$dockerRegistry/hello_world1:${env.BUILD_ID}")
     docker_app.push()

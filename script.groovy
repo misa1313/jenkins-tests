@@ -5,11 +5,16 @@ def mavenBuild() {
   sh "mvn surefire-report:report"
 }
 
-def buildDock(String dockerRegistry) {
+def buildDock(String credId, String dockerRegistry) {
   echo "Building Docker image..."
-  docker_app = docker.build("$dockerRegistry/hello_world1:${env.BUILD_ID}")
-  docker_app.push()
-  docker_app.push('latest')
+  withCredentials([usernamePassword(credentialsId: "$credId", passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+    def USER = env.USER
+    def PASS = env.PASS
+    sh 'echo $PASS | docker login -u $USER --password-stdin'
+    docker_app = docker.build("$dockerRegistry/hello_world1:${env.BUILD_ID}")
+    docker_app.push()
+    docker_app.push('latest')
+  }
 }
 
 def deployContainer(String dockerRegistry) {
